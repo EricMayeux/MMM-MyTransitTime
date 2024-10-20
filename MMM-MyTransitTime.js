@@ -48,13 +48,20 @@ getDom: function () {
 					walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
 					listItem.appendChild(walkingIcon);
 					textSpan.textContent = detail;
-				} else if (detail.includes("TRANSIT")) {
+				//} else if (detail.includes("TRANSIT")) {
+				} else if (detail.includes("Métro")) {
 					const transitIcon = document.createElement("i");
 					transitIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
 					listItem.appendChild(transitIcon);
+					textSpan.textContent = detail;
 					// Extract the line name from the detail and append it
-					const lineName = detail.match(/Take (.*?) from/)[1]; // Adjust regex if needed
-					textSpan.textContent = `${lineName} - ${detail}`;
+					//const lineName = detail.match(/Take (.*?) from/)[1]; // Adjust regex if needed
+					//textSpan.textContent = `${lineName} - ${detail}`;
+				} else if (detail.includes("Bus")) {
+					const transitIcon = document.createElement("i");
+					transitIcon.className = "fas fa-bus"; // FontAwesome bus icon
+					listItem.appendChild(transitIcon);
+					textSpan.textContent = detail;
 				}
 
 				listItem.appendChild(textSpan);
@@ -98,6 +105,7 @@ getDom: function () {
 	  console.log("[MMM-MyTransitTime] Received TRANSIT_TIME_RESULT notification.");
 	  this.transitTime = payload.transitTime;
 	  this.transitDetails = payload.transitDetails;
+	  //this.busDetails = payload.busDetails;
 
 	  this.updateDom();
 
@@ -119,7 +127,7 @@ getDom: function () {
   // Fetch transit data from the Google API.
   fetchTransitData: function () {
 	const { apiKey, origin, destination, mode } = this.config;
-	const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&key=${apiKey}`;
+	const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
 
 	// Make an HTTP request to the API
 	fetch(apiUrl)
@@ -133,17 +141,26 @@ getDom: function () {
 		// Process the API response and extract transit information
 		const transitTime = data.routes[0].legs[0].duration.text;
 		const transitSteps = data.routes[0].legs[0].steps.map((step) => {
-		  if (step.travel_mode === "WALKING") {
-			return `${step.travel_mode}: Walk for ${step.distance.text} (${step.duration.text})`;
-		  } else if (step.travel_mode === "TRANSIT") {
-			return `${step.travel_mode}: Take ${step.transit_details.line.name} from ${step.transit_details.departure_stop.name} to ${step.transit_details.arrival_stop.name} (${step.distance.text}, ${step.duration.text})`;
-		  }
-		});
+			/*if (step.travel_mode === "WALKING") {
+			  return `${step.travel_mode}: Walk for ${step.distance.text} (${step.duration.text})`;
+			} else */
+			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicule.type === "SUBWAY") {
+			  return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
+			} else if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicule.type === "BUS") {
+				return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+			}
+		  });
+		  /*const busDetails = data.routes[0].legs[0].steps.map((step) => {
+			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicule.type === "BUS") {
+			  return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+			}
+		  });*/
 
 		// Send the transit information to the front-end
 		this.sendSocketNotification("TRANSIT_TIME_RESULT", {
 		  transitTime: transitTime,
 		  transitDetails: transitSteps,
+		  //busDetails: busDetails,
 		});
 	  })
 	  .catch((error) => {
