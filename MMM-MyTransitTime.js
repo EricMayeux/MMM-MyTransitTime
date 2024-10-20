@@ -50,17 +50,17 @@ getDom: function () {
 					textSpan.textContent = detail;
 				//} else if (detail.includes("TRANSIT")) {
 				} else if (detail.includes("Métro")) {
-					const transitIcon = document.createElement("i");
-					transitIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
-					listItem.appendChild(transitIcon);
+					const metroIcon = document.createElement("i");
+					metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
+					listItem.appendChild(metroIcon);
 					textSpan.textContent = detail;
 					// Extract the line name from the detail and append it
 					//const lineName = detail.match(/Take (.*?) from/)[1]; // Adjust regex if needed
 					//textSpan.textContent = `${lineName} - ${detail}`;
 				} else if (detail.includes("Bus")) {
-					const transitIcon = document.createElement("i");
-					transitIcon.className = "fas fa-bus"; // FontAwesome bus icon
-					listItem.appendChild(transitIcon);
+					const busIcon = document.createElement("i");
+					busIcon.className = "fas fa-bus"; // FontAwesome bus icon
+					listItem.appendChild(busIcon);
 					textSpan.textContent = detail;
 				}
 
