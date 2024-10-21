@@ -47,7 +47,7 @@ getDom: function () {
 					const walkingIcon = document.createElement("i");
 					walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
 					listItem.appendChild(walkingIcon);
-					textSpan.textContent = detail;
+					textSpan.textContent = `coucou - ${detail}`;
 				//} else if (detail.includes("TRANSIT")) {
 				} else if (detail.includes("Métro")) {
 					const metroIcon = document.createElement("i");
@@ -144,14 +144,14 @@ getDom: function () {
 			/*if (step.travel_mode === "WALKING") {
 			  return `${step.travel_mode}: Walk for ${step.distance.text} (${step.duration.text})`;
 			} else */
-			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicule.type === "SUBWAY") {
+			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicle.type === "SUBWAY") {
 			  return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
-			} else if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicule.type === "BUS") {
+			} else if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicle.type === "BUS") {
 				return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
 			}
 		  });
 		  /*const busDetails = data.routes[0].legs[0].steps.map((step) => {
-			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicule.type === "BUS") {
+			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicle.type === "BUS") {
 			  return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
 			}
 		  });*/
