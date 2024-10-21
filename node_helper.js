@@ -6,7 +6,7 @@ module.exports = NodeHelper.create({
 		if (notification === "GET_TRANSIT_TIME") {
 			console.log("[MMM-MyTransitTime] Received GET_TRANSIT_TIME notification.");
 			const { apiKey, origin, destination, mode } = payload;
-			const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&key=${apiKey}`;
+			const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=bus&transit_mode=subway&language=fr&key=${apiKey}`;
 
 			console.log("[MMM-MyTransitTime] Requesting data from API URL:", apiUrl);
 
@@ -23,9 +23,9 @@ module.exports = NodeHelper.create({
 
 						const transitSteps = data.routes[0].legs[0].steps.map(step => {
 							if (step.travel_mode === "WALKING") {
-								return `${step.travel_mode}: Walk for ${step.distance.text} (${step.duration.text})`;
+								return `${step.travel_mode}: Marche/Walk for ${step.distance.text} (${step.duration.text})`;
 							} else if (step.travel_mode === "TRANSIT") {
-								return `${step.travel_mode}: Take ${step.transit_details.line.name} from ${step.transit_details.departure_stop.name} to ${step.transit_details.arrival_stop.name} (${step.distance.text}, ${step.duration.text})`;
+								return `${step.travel_mode}: Prendre/take ${step.transit_details.line.name} depuis/from ${step.transit_details.departure_stop.name} vers/to ${step.transit_details.arrival_stop.name} (${step.distance.text}, ${step.duration.text})`;
 							}
 						});
 

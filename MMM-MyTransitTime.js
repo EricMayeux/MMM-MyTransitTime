@@ -47,7 +47,7 @@ getDom: function () {
 					const walkingIcon = document.createElement("i");
 					walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
 					listItem.appendChild(walkingIcon);
-					textSpan.textContent = `coucou - ${detail}`;
+					textSpan.textContent = `YO - ${detail}`;
 				//} else if (detail.includes("TRANSIT")) {
 				} else if (detail.includes("Métro")) {
 					const metroIcon = document.createElement("i");
