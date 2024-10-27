@@ -6,7 +6,7 @@ module.exports = NodeHelper.create({
 		if (notification === "GET_TRANSIT_TIME") {
 			console.log("[MMM-MyTransitTime] Received GET_TRANSIT_TIME notification.");
 			const { apiKey, origin, destination, mode } = payload;
-			const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=bus&transit_mode=subway&language=fr&key=${apiKey}`;
+			const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
 
 			console.log("[MMM-MyTransitTime] Requesting data from API URL:", apiUrl);
 
@@ -16,16 +16,23 @@ module.exports = NodeHelper.create({
 
 					// Log the API response data
 					console.log("[MMM-MyTransitTime] API Response Data:", body);
-
 					const data = JSON.parse(body);
 					if (data.routes[0] && data.routes[0].legs[0]) {
 						const transitTime = data.routes[0].legs[0].duration.text;
 
 						const transitSteps = data.routes[0].legs[0].steps.map(step => {
 							if (step.travel_mode === "WALKING") {
-								return `${step.travel_mode}: Marche/Walk for ${step.distance.text} (${step.duration.text})`;
+								console.log("Je suis walking dead l-26");
+								return `${step.travel_mode}: Marche ${step.distance.text} (${step.duration.text})`;
 							} else if (step.travel_mode === "TRANSIT") {
-								return `${step.travel_mode}: Prendre/take ${step.transit_details.line.name} depuis/from ${step.transit_details.departure_stop.name} vers/to ${step.transit_details.arrival_stop.name} (${step.distance.text}, ${step.duration.text})`;
+								console.log("Je suis transit l-29");
+								if (step.transit_details.line.vehicle.type === "SUBWAY") {
+									console.log("Je suis tromé l-31");
+									return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
+								} else if (step.transit_details.line.vehicle.type === "BUS") {
+									console.log("Je suis bus l-34");
+									return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+								}
 							}
 						});
 

@@ -8,7 +8,7 @@ Module.register("MMM-MyTransitTime", {
 	interval: 60000, // 1 minute
 	showTransitDetails: true, // Set to true to display step-by-step transit details
 	customLabel: "Estimated Time to Get to Work", // Custom label for the module
-	debounceDelay: 10000, // 10 seconds by default, adjust as needed
+	debounceDelay: 20000, // 10 seconds by default, adjust as needed
   },
 
   // Initialize the module.
@@ -141,13 +141,18 @@ getDom: function () {
 		// Process the API response and extract transit information
 		const transitTime = data.routes[0].legs[0].duration.text;
 		const transitSteps = data.routes[0].legs[0].steps.map((step) => {
-			/*if (step.travel_mode === "WALKING") {
-			  return `${step.travel_mode}: Walk for ${step.distance.text} (${step.duration.text})`;
-			} else */
-			if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicle.type === "SUBWAY") {
-			  return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
-			} else if (step.travel_mode === "TRANSIT" && step.transit_details.line.vehicle.type === "BUS") {
-				return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+			if (step.travel_mode === "WALKING") {
+				console.log("Je suis walking dead l-145");
+				return `1-1-1 ${step.travel_mode}: ${step.distance.text} (${step.duration.text})`;
+			} else if (step.travel_mode === "TRANSIT") {
+				console.log("Je suis transit l-148");
+				if (step.transit_details.line.vehicle.type === "SUBWAY") {
+					console.log("Je suis tromé l-150");
+					return `2-2-2 Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
+				} else if (step.transit_details.line.vehicle.type === "BUS") {
+					console.log("Je suis bus l-153");
+					return `3-3-3 Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+				}
 			}
 		  });
 		  /*const busDetails = data.routes[0].legs[0].steps.map((step) => {
