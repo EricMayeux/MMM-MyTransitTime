@@ -5,16 +5,20 @@ Module.register("MMM-MyTransitTime", {
 	origin: "YOUR_ORIGIN_ADDRESS",
 	destination: "YOUR_DESTINATION_ADDRESS",
 	mode: "transit",
-	interval: 60000, // 1 minute
+	interval: 30000, // 30 sec
 	showTransitDetails: true, // Set to true to display step-by-step transit details
 	customLabel: "Estimated Time to Get to Work", // Custom label for the module
-	debounceDelay: 10000, // 10 seconds by default, adjust as needed
+	debounceDelay: 5000, // 5 seconds by default, adjust as needed
   },
 
   // Initialize the module.
   start: function () {
 	console.log("[MMM-MyTransitTime] Starting module: " + this.name);
 	this.transitTime = null;
+
+	// Définir la fonction avec debounce
+    this.fetchTransitData = this.debounce(this.fetchTransitData.bind(this), this.config.debounceDelay);
+
 	// Schedule the first update.
 	this.scheduleUpdate();
 	console.log("[MMM-MyTransitTime] after scheduleUpdate() func ");
@@ -108,16 +112,16 @@ Module.register("MMM-MyTransitTime", {
 
   // Schedule the next update.
   scheduleUpdate: function () {
-	var self = this;
-	setInterval(self.debounce(function () {
-	  console.log("[MMM-MyTransitTime] Scheduling the next update.");
-	  // Call the debounced function to fetch transit data
-	  self.fetchTransitData.bind(self);
-	}, this.config.debounceDelay), this.config.interval);
+    const self = this;
+    setInterval(() => {
+        console.log("[MMM-MyTransitTime] Scheduling the next update.");
+        self.fetchTransitData();  // Appel direct de fetchTransitData, déjà géré par debounce
+    }, this.config.interval);
   },
 
   // Fetch transit data from the Google API.
   fetchTransitData: function () {
+	console.log("[MMM-MyTransitTime] fetchTransitData est appelé !!");
 	const { apiKey, origin, destination, mode } = this.config;
 	const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
 
@@ -152,7 +156,6 @@ Module.register("MMM-MyTransitTime", {
 		this.sendSocketNotification("TRANSIT_TIME_RESULT", {
 		  transitTime: transitTime,
 		  transitDetails: transitSteps,
-		  //busDetails: busDetails,
 		});
 	  })
 	  .catch((error) => {
