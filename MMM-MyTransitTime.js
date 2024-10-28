@@ -14,12 +14,7 @@ Module.register("MMM-MyTransitTime", {
   // Initialize the module.
   start: function () {
 	console.log("[MMM-MyTransitTime] Starting module: " + this.name);
-
 	this.transitTime = null;
-
-	// Define a function to fetch transit data with debouncing
-	this.fetchTransitData = this.debounce(this.fetchTransitData, this.config.debounceDelay);
-	console.log("[MMM-MyTransitTime] after debounce() func ");
 	// Schedule the first update.
 	this.scheduleUpdate();
 	console.log("[MMM-MyTransitTime] after scheduleUpdate() func ");
@@ -29,58 +24,57 @@ Module.register("MMM-MyTransitTime", {
   getDom: function () {
 	  const wrapper = document.createElement("div");
 	  wrapper.className = "my-transit-time";
-		if (this.transitTime) {
-			const timeElement = document.createElement("div");
-			timeElement.className = "transit-time right-aligned"; // Add a class for right alignment
-			timeElement.textContent = `Transit Time: ${this.transitTime}`;
-			wrapper.appendChild(timeElement);
+	  if (this.transitTime) {
+		  const timeElement = document.createElement("div");
+		  timeElement.className = "transit-time right-aligned"; // Add a class for right alignment
+		  timeElement.textContent = `Transit Time: ${this.transitTime}`;
+		  wrapper.appendChild(timeElement);
+		  if (this.config.showTransitDetails && this.transitDetails) {
+			  const detailsList = document.createElement("ul");
+			  detailsList.className = "transit-details";
 
-			if (this.config.showTransitDetails && this.transitDetails) {
-				const detailsList = document.createElement("ul");
-				detailsList.className = "transit-details";
+			  this.transitDetails.forEach((detail) => {
+				  const listItem = document.createElement("li");
+				  const textSpan = document.createElement("span");
 
-				this.transitDetails.forEach((detail) => {
-					const listItem = document.createElement("li");
-					const textSpan = document.createElement("span");
+				  if (detail.includes("WALKING")) {
+					  const walkingIcon = document.createElement("i");
+					  walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
+					  listItem.appendChild(walkingIcon);
+					  textSpan.textContent = `YO - ${detail}`;
+				  } else if (detail.includes("Métro")) {
+				      const metroIcon = document.createElement("i");
+					  metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
+					  listItem.appendChild(metroIcon);
+					  textSpan.textContent = detail;
+					  // Extract the line name from the detail and append it
+					  //const lineName = detail.match(/Take (.*?) from/)[1]; // Adjust regex if needed
+					  //textSpan.textContent = `${lineName} - ${detail}`;
+				  } else if (detail.includes("Bus")) {
+				      const busIcon = document.createElement("i");
+					  busIcon.className = "fas fa-bus"; // FontAwesome bus icon
+					  listItem.appendChild(busIcon);
+					  textSpan.textContent = detail;
+				  }
 
-					if (detail.includes("WALKING")) {
-						const walkingIcon = document.createElement("i");
-						walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
-						listItem.appendChild(walkingIcon);
-						textSpan.textContent = `YO - ${detail}`;
-					} else if (detail.includes("Métro")) {
-						const metroIcon = document.createElement("i");
-						metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
-						listItem.appendChild(metroIcon);
-						textSpan.textContent = detail;
-						// Extract the line name from the detail and append it
-						//const lineName = detail.match(/Take (.*?) from/)[1]; // Adjust regex if needed
-						//textSpan.textContent = `${lineName} - ${detail}`;
-					} else if (detail.includes("Bus")) {
-						const busIcon = document.createElement("i");
-						busIcon.className = "fas fa-bus"; // FontAwesome bus icon
-						listItem.appendChild(busIcon);
-						textSpan.textContent = detail;
-					}
+				  listItem.appendChild(textSpan);
+				  detailsList.appendChild(listItem);
+			  });
 
-					listItem.appendChild(textSpan);
-					detailsList.appendChild(listItem);
-				});
-
-				wrapper.appendChild(detailsList);
-			}
-		} else {
+			  wrapper.appendChild(detailsList);
+		  }
+	  } else {
 			const errorMessage = document.createElement("div");
 			errorMessage.className = "error-message";
 			errorMessage.textContent = "No transit data available.";
 			wrapper.appendChild(errorMessage);
-		}
-
-		return wrapper;
-	},
+	  }
+	  return wrapper;
+  },
 
   // Helper function to extract Google transit icon from detail
   getGoogleTransitIcon: function (detail) {
+	  console.log("[MMM-MyTransitTime] getGoogleTransitIcon func ");
 	  const icon = detail.match(/icon:(.*?),/);
 	  if (icon) {
 		  return icon[1].trim();
@@ -100,12 +94,11 @@ Module.register("MMM-MyTransitTime", {
 
   // Override socket notification handler.
   socketNotificationReceived: function (notification, payload) {
+	console.log("[MMM-MyTransitTime] socketNotificationReceived func.");
 	if (notification === "TRANSIT_TIME_RESULT") {
 	  console.log("[MMM-MyTransitTime] Received TRANSIT_TIME_RESULT notification.");
 	  this.transitTime = payload.transitTime;
 	  this.transitDetails = payload.transitDetails;
-	  //this.busDetails = payload.busDetails;
-
 	  this.updateDom();
 
 	  // Schedule the next update.
@@ -116,11 +109,11 @@ Module.register("MMM-MyTransitTime", {
   // Schedule the next update.
   scheduleUpdate: function () {
 	var self = this;
-	setInterval(function () {
+	setInterval(self.debounce(function () {
 	  console.log("[MMM-MyTransitTime] Scheduling the next update.");
 	  // Call the debounced function to fetch transit data
-	  self.fetchTransitData();
-	}, this.config.interval);
+	  self.fetchTransitData.bind(self);
+	}, this.config.debounceDelay), this.config.interval);
   },
 
   // Fetch transit data from the Google API.
@@ -171,13 +164,10 @@ Module.register("MMM-MyTransitTime", {
   debounce: function (func, delay) {
 	console.log("[MMM-MyTransitTime] init debounce :) ");
 	var timeout;
-	return function () {
-	  var context = this;
-	  var args = arguments;
-	  clearTimeout(timeout);
-	  timeout = setTimeout(function () {
-		func.apply(context, args);
-	  }, delay);
+	return function (...args) {
+		const context = this;
+		clearTimeout(timeout);
+		timeout = setTimeout(() => func.apply(context, args), delay);
 	};
-  },
+   },
 });
