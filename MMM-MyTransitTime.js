@@ -13,15 +13,20 @@ Module.register("MMM-MyTransitTime", {
 
   // Initialize the module.
   start: function () {
-	console.log("[MMM-MyTransitTime] Starting module: " + this.name);
+	console.log("[MMM-MyTransitTime] Starting module:");
 	this.transitTime = null;
 
 	// Définir la fonction avec debounce
-    this.fetchTransitData = this.debounce(this.fetchTransitData.bind(this), this.config.debounceDelay);
+    //this.fetchTransitData = this.debounce(this.fetchTransitData.bind(this), this.config.debounceDelay);
+	//this.fetchTransitData = this.fetchTransitData.bind(this);
 
 	// Schedule the first update.
+	console.log("[MMM-MyTransitTime] before scheduleUpdate");
 	this.scheduleUpdate();
 	console.log("[MMM-MyTransitTime] after scheduleUpdate() func ");
+
+	// remplace ligne 20
+	this.fetchTransitData = this.fetchTransitData.bind(this);
   },
 
   // Override dom generator.
