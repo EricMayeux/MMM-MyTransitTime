@@ -5,7 +5,7 @@ Module.register("MMM-MyTransitTime", {
 	origin: "YOUR_ORIGIN_ADDRESS",
 	destination: "YOUR_DESTINATION_ADDRESS",
 	mode: "transit",
-	interval: 30000, // 30 sec
+	interval: 60000, // 60 sec
 	showTransitDetails: true, // Set to true to display step-by-step transit details
 	customLabel: "Estimated Time to Get to Work", // Custom label for the module
 	debounceDelay: 5000, // 5 seconds by default, adjust as needed
@@ -18,13 +18,16 @@ Module.register("MMM-MyTransitTime", {
 
 		this.apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
 
+		// Apply debounce to getTransit
+		this.getTransitDebounced = this.debounce(this.getTransit.bind(this), this.config.debounceDelay);
+
 		this.scheduleUpdate();
 	},
 
    // Schedule the next update.
 	scheduleUpdate: function () {
 		setInterval(() => {
-			this.getTransit();
+			this.getTransitDebounced();
 		}, this.config.interval);
 	},
 
@@ -40,9 +43,6 @@ Module.register("MMM-MyTransitTime", {
 		  this.transitTime = payload.transitTime;
 		  this.transitDetails = payload.transitDetails;
 		  this.updateDom();
-	
-		  // Schedule the next update.
-		  this.scheduleUpdate();
 		}
 		this.updateDom(5000);
 	  },
