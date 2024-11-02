@@ -15,7 +15,7 @@ module.exports = NodeHelper.create({
 					console.log("[MMM-MyTransitTime] Successful response from Google Maps API.");
 
 					// Log the API response data
-					console.debug("[MMM-MyTransitTime] API Response Data:", body);
+					//console.debug("[MMM-MyTransitTime] API Response Data:", response);
 					const data = JSON.parse(body);
 					if (data.routes[0] && data.routes[0].legs[0]) {
 						const transitTime = data.routes[0].legs[0].duration.text;
