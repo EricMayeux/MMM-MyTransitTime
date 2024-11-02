@@ -1,4 +1,3 @@
-console.log("[MMM-MyTransitTime] Module file is loaded.");
 Module.register("MMM-MyTransitTime", {
   // Default module config.
   defaults: {
@@ -32,6 +31,7 @@ Module.register("MMM-MyTransitTime", {
 
   // Override dom generator.
   getDom: function () {
+	  console.log("[MMM-MyTransitTime] getDom func ");
 	  const wrapper = document.createElement("div");
 	  wrapper.className = "my-transit-time";
 	  if (this.transitTime) {
@@ -95,6 +95,7 @@ Module.register("MMM-MyTransitTime", {
 
   // Override notification handler.
   notificationReceived: function (notification, payload, sender) {
+	console.log(`[MMM-MyTransitTime] Notification received: ${notification}`);
 	if (notification === "DOM_OBJECTS_CREATED") {
 	  console.log("[MMM-MyTransitTime] DOM objects are ready, triggering the first update.");
 	  // DOM objects are ready, trigger the first update.
@@ -143,15 +144,15 @@ Module.register("MMM-MyTransitTime", {
 		const transitTime = data.routes[0].legs[0].duration.text;
 		const transitSteps = data.routes[0].legs[0].steps.map((step) => {
 			if (step.travel_mode === "WALKING") {
-				console.log("Je suis walking dead l-145");
+				console.log("walking dead l-145");
 				return `1-1-1 ${step.travel_mode}: ${step.distance.text} (${step.duration.text})`;
 			} else if (step.travel_mode === "TRANSIT") {
-				console.log("Je suis transit l-148");
+				console.log("transit l-148");
 				if (step.transit_details.line.vehicle.type === "SUBWAY") {
-					console.log("Je suis tromé l-150");
+					console.log("tromé l-150");
 					return `2-2-2 Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
 				} else if (step.transit_details.line.vehicle.type === "BUS") {
-					console.log("Je suis bus l-153");
+					console.log("bus l-153");
 					return `3-3-3 Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
 				}
 			}
