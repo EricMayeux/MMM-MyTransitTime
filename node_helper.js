@@ -7,14 +7,6 @@ module.exports = NodeHelper.create({
 		console.log("[MMM-MyTransitTime] start node_helper.");
 	},
 
-	socketNotificationReceived: function(notification, payload) {
-		if (notification === "GET_TRANSIT") {
-			console.log("[MMM-MyTransitTime] Received GET_TRANSIT notification.");
-
-			this.getGoogleMapInfo(payload);
-		}
-	},
-
 	getGoogleMapInfo: function(url) {
 		console.log("[MMM-MyTransitTime] Requesting data from API URL");
 
@@ -59,5 +51,14 @@ module.exports = NodeHelper.create({
 					console.error("[MMM-MyTransitTime] Error fetching transit time:", error);
 				}
 			});
+	},
+
+	socketNotificationReceived: function(notification, payload) {
+		if (notification === "GET_TRANSIT") {
+			console.log("[MMM-MyTransitTime] Received GET_TRANSIT notification.");
+
+			this.getGoogleMapInfo(payload);
+		}
 	}
+	
 });
