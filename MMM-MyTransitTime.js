@@ -13,7 +13,9 @@ Module.register("MMM-MyTransitTime", {
 
   // Initialize the module.
 	start: function () {
-		console.log("[MMM-MyTransitTime] Starting module:");
+		Log.info("[MMM-MyTransitTime] Starting module:" + this.name );
+		const { apiKey, origin, destination, mode } = this.config;
+
 		this.apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
 
 		this.scheduleUpdate();
