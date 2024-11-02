@@ -1,3 +1,4 @@
+console.log("[MMM-MyTransitTime] Module file is loaded.");
 Module.register("MMM-MyTransitTime", {
   // Default module config.
   defaults: {
@@ -103,7 +104,6 @@ Module.register("MMM-MyTransitTime", {
 
   // Override socket notification handler.
   socketNotificationReceived: function (notification, payload) {
-	console.log("[MMM-MyTransitTime] socketNotificationReceived func.");
 	if (notification === "TRANSIT_TIME_RESULT") {
 	  console.log("[MMM-MyTransitTime] Received TRANSIT_TIME_RESULT notification.");
 	  this.transitTime = payload.transitTime;
