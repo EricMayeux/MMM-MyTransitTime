@@ -13,9 +13,8 @@ Module.register("MMM-MyTransitTime", {
 
   // Initialize the module.
 	start: function () {
-		Log.info("[MMM-MyTransitTime] Starting module:");
+		console.log("[MMM-MyTransitTime] Starting module:");
 		this.apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
-
 
 		this.scheduleUpdate();
 	},
@@ -35,7 +34,7 @@ Module.register("MMM-MyTransitTime", {
 	// RECEIVE TRANSIT_TIME_RESULT
 	socketNotificationReceived: function (notification, payload) {
 		if (notification === "TRANSIT_TIME_RESULT") {
-		  Log.info("[MMM-MyTransitTime] Received TRANSIT_TIME_RESULT notification.");
+		  console.log("[MMM-MyTransitTime] Received TRANSIT_TIME_RESULT notification.");
 		  this.transitTime = payload.transitTime;
 		  this.transitDetails = payload.transitDetails;
 		  this.updateDom();
@@ -48,7 +47,7 @@ Module.register("MMM-MyTransitTime", {
 
 	  // Override dom generator.
 	getDom: function () {
-		Log.info("[MMM-MyTransitTime] getDom func ");
+		console.log("[MMM-MyTransitTime] getDom func ");
 		const wrapper = document.createElement("div");
 		wrapper.className = "my-transit-time";
 		if (this.transitTime) {

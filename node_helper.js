@@ -4,13 +4,12 @@ const request = require("request");
 module.exports = NodeHelper.create({
 
 	start: function() {
-		Log.info("[MMM-MyTransitTime] start node_helper.");
-
+		console.log("[MMM-MyTransitTime] start node_helper.");
 	},
 
 	socketNotificationReceived: function(notification, payload) {
 		if (notification === "GET_TRANSIT") {
-			Log.info("[MMM-MyTransitTime] Received GET_TRANSIT notification.");
+			console.log("[MMM-MyTransitTime] Received GET_TRANSIT notification.");
 
 			this.getGoogleMapInfo(payload);
 		}
@@ -24,7 +23,7 @@ module.exports = NodeHelper.create({
             method: 'GET'
         }, (error, response, body) => {
 				if (!error && response.statusCode == 200) {
-					Log.info("[MMM-MyTransitTime] Successful response from Google Maps API.");
+					console.log("[MMM-MyTransitTime] Successful response from Google Maps API.");
 
 					var data = JSON.parse(body);
 
@@ -47,17 +46,17 @@ module.exports = NodeHelper.create({
 							}
 						});
 
-						Log.info("[MMM-MyTransitTime] Transit steps:", transitSteps);
-						Log.info("[MMM-MyTransitTime] Sending transit details to frontend.");
+						console.log("[MMM-MyTransitTime] Transit steps:", transitSteps);
+						console.log("[MMM-MyTransitTime] Sending transit details to frontend.");
 						this.sendSocketNotification("TRANSIT_TIME_RESULT", {
 							transitTime: transitTime,
 							transitDetails: transitSteps
 						});
 					} else {
-						Log.error("[MMM-MyTransitTime] No routes or legs found in API response.");
+						console.error("[MMM-MyTransitTime] No routes or legs found in API response.");
 					}
 				} else {
-					Log.error("[MMM-MyTransitTime] Error fetching transit time:", error);
+					console.error("[MMM-MyTransitTime] Error fetching transit time:", error);
 				}
 			});
 	}
