@@ -8,8 +8,6 @@ module.exports = NodeHelper.create({
 	},
 
 	getGoogleMapInfo: function(url) {
-		console.log("[MMM-MyTransitTime] Requesting data from API URL");
-
 		request({
             url: url,
             method: 'GET'
@@ -24,15 +22,11 @@ module.exports = NodeHelper.create({
 
 						var transitSteps = data.routes[0].legs[0].steps.map(step => {
 							if (step.travel_mode === "WALKING") {
-								console.log("Je suis walking dead l-26");
 								return `${step.travel_mode}: Marche ${step.distance.text} (${step.duration.text})`;
 							} else if (step.travel_mode === "TRANSIT") {
-								console.log("Je suis transit l-29");
 								if (step.transit_details.line.vehicle.type === "SUBWAY") {
-									console.log("Je suis tromé l-31");
 									return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
 								} else if (step.transit_details.line.vehicle.type === "BUS") {
-									console.log("Je suis bus l-34");
 									return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
 								}
 							}
@@ -60,5 +54,5 @@ module.exports = NodeHelper.create({
 			this.getGoogleMapInfo(payload);
 		}
 	}
-	
+
 });
