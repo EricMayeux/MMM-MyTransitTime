@@ -142,7 +142,7 @@ Module.register("MMM-MyTransitTime", {
 		const isWithinSpecificRange = montrealTime.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
 		if (isWeekend || !isBetween730And830 || !isWithinSpecificRange) {
-			this.loopInterval = 60 * 60 * 1000; // 1 heure
+			this.loopInterval = 30 * 60 * 1000; // 30 minutes
 			return false;
 		} else {
 			this.loopInterval = this.config.interval;
