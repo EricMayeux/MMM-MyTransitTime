@@ -138,8 +138,8 @@ Module.register("MMM-MyTransitTime", {
 		// Vérifier si l'heure actuelle est dans cet intervalle
 		const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30
 		// Vérifier si c'est un jour de semaine et dans la plage horaire spécifiée
-		const isWeekend = montrealMomentNow.day() === 0 && montrealTime.day() === 6; // ni samedi, ni dimanche
-		const isWithinSpecificRange = montrealTime.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
+		const isWeekend = montrealMomentNow.day() === 0 || montrealMomentNow.day() === 6;
+		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
 		if (isWeekend || !isBetween730And830 || !isWithinSpecificRange) {
 			this.loopInterval = 30 * 60 * 1000; // 30 minutes
