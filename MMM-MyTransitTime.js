@@ -37,7 +37,7 @@ Module.register("MMM-MyTransitTime", {
 		this.startHours = moment.tz("07:30", "HH:mm", tz);
 		this.endHours = moment.tz("08:30", "HH:mm", tz);
 		this.specificExtraDateTimeBegin = moment.tz(scheduleExtraBeginTime, "YYYY-MM-DD HH:mm", tz);
-		this.specificExtraDateTimeFinish = moment.tz(scheduleExtraFinishTime, "YYYY-MM-DD HH:mm", Ttz);
+		this.specificExtraDateTimeFinish = moment.tz(scheduleExtraFinishTime, "YYYY-MM-DD HH:mm", tz);
 
 		// call Google Maps - API Destination
 		this.apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=${mode}&transit_mode=subway&transit_mode=bus&language=fr&key=${apiKey}`;
