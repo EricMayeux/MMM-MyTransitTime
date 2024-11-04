@@ -153,11 +153,13 @@ Module.register("MMM-MyTransitTime", {
 		const isWeekend = montrealMomentNow.day() === 0 || montrealMomentNow.day() === 6;
 		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
-		if (isWeekend || !isBetween730And830 || !isWithinSpecificRange) {
+		if ((isWeekend || !isBetween730And830) && !isWithinSpecificRange) {
 			this.loopInterval = 30 * 60 * 1000; // 30 minutes
+			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
 		} else {
 			this.loopInterval = this.config.interval;
+			console.log("[MMM-MyTransitTime] let's Go !");
 			return true;
 		}
 	},
