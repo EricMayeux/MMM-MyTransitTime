@@ -1,3 +1,5 @@
+const moment = require('moment-timezone');
+
 Module.register("MMM-MyTransitTime", {
 
   // Default module config.
@@ -17,8 +19,6 @@ Module.register("MMM-MyTransitTime", {
   // Initialize the module.
 	start: function () {
 		Log.info("[MMM-MyTransitTime] Starting module:" + this.name );
-
-		this.moment = require('moment-timezone');
 		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
 
 		this.loopInterval = this.config.interval;
