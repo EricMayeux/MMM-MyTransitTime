@@ -1,20 +1,30 @@
-const moment = require('moment-timezone');
-
 Module.register("MMM-MyTransitTime", {
 
-  // Default module config.
-  defaults: {
-	apiKey: "YOUR_API_KEY",
-	origin: "YOUR_ORIGIN_ADDRESS",
-	destination: "YOUR_DESTINATION_ADDRESS",
-	mode: "transit",
-	interval: 180000, // 3min
-	showTransitDetails: true, // Set to true to display step-by-step transit details
-	customLabel: "Estimated Time to Get to Work", // Custom label for the module
-	debounceDelay: 120000, // 2 min by default, adjust as needed
-	scheduleExtraBeginTime: "2024-11-02 14:30", // début des appels a Google Map a - YYYY-MM-DDTHH:mm"
-	scheduleExtraFinishTime: "2024-11-02 15:30", // arret des appels a Google Map a. ex : 2024-11-02T14:30"
-  },
+	// Default module config.
+	defaults: {
+		apiKey: "YOUR_API_KEY",
+		origin: "YOUR_ORIGIN_ADDRESS",
+		destination: "YOUR_DESTINATION_ADDRESS",
+		mode: "transit",
+		interval: 180000, // 3min
+		showTransitDetails: true, // Set to true to display step-by-step transit details
+		customLabel: "Estimated Time to Get to Work", // Custom label for the module
+		debounceDelay: 120000, // 2 min by default, adjust as needed
+		scheduleExtraBeginTime: "2024-11-02 14:30", // début des appels a Google Map a - YYYY-MM-DDTHH:mm"
+		scheduleExtraFinishTime: "2024-11-02 15:30", // arret des appels a Google Map a. ex : 2024-11-02T14:30"
+	},
+
+	getScripts: function () {
+		return [
+			this.file('moment-timezone.js'), // this file will be loaded straight from the module folder.
+		]
+	},
+
+	getStyles: function() {
+		return [
+			//this.file('anotherfile.css'), // this file will be loaded straight from the module folder.
+		]
+	},
 
   // Initialize the module.
 	start: function () {
