@@ -16,7 +16,7 @@ Module.register("MMM-MyTransitTime", {
 
 	getScripts: function () {
 		return [
-			this.file('moment-timezone.js'), // this file will be loaded straight from the module folder.
+			this.file('node_modules/moment-timezone/moment-timezone.js'),
 		]
 	},
 
