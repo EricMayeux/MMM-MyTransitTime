@@ -10,6 +10,7 @@
   "author": "SageBrushes on Github",
   "license": "ISC",
   "dependencies": {
+    "moment-timezone": "^0.5.46",
     "mta-subway-bullets": "^0.5.1",
     "request": "^2.88.2"
   }

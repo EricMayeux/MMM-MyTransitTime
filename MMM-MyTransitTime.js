@@ -28,7 +28,6 @@ Module.register("MMM-MyTransitTime", {
 
   // Initialize the module.
 	start: function () {
-		Log.info("[MMM-MyTransitTime] Starting module:" + this.name );
 		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
 
 		this.loopInterval = this.config.interval;
@@ -58,10 +57,11 @@ Module.register("MMM-MyTransitTime", {
 	// Send GET_TRANSIT
 	getTransit: function () {
 		// Vérifiez si l'heure actuelle se situe dans la plage de pause et week-end
-		if (isSpecificSchedule()) {
-			console.log("Nous sommes en semaine entre 7h30 et 8h30 à Montréal.");
+		if (this.isSpecificSchedule()) {
+			console.log("Nous sommes en semaine entre 7h30 et 8h30 à Montréal. Prochain appel = " + this.loopInterval/1000/60 + " min");
 			this.sendSocketNotification('GET_TRANSIT', this.apiUrl);
 		} else {
+			console.log("Prochain appel = " + this.loopInterval/1000/60 + " min");
 			return;
 		}
 	},
