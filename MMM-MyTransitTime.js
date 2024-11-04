@@ -17,6 +17,7 @@ Module.register("MMM-MyTransitTime", {
 	getScripts: function () {
 		return [
 			this.file('node_modules/moment-timezone/moment-timezone.js'),
+			this.file('node_modules/moment-timezone/builds/moment-timezone-with-data.min.js'),
 		]
 	},
 
@@ -31,7 +32,7 @@ Module.register("MMM-MyTransitTime", {
 		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
 
 		this.loopInterval = this.config.interval;
-		const tz = "Canada/Eastern";
+		const tz = "America/Toronto";
 
 		// Définir les limites de l'intervalle (7h30 et 8h30)
 		this.startHours = moment.tz("07:30", "HH:mm", tz);
@@ -144,7 +145,7 @@ Module.register("MMM-MyTransitTime", {
 
 	isSpecificSchedule: function () {
 		// Obtenir l'heure actuelle à Montréal
-		const montrealMomentNow = moment.tz("Canada/Eastern");
+		const montrealMomentNow = moment.tz("America/Toronto");
 
 		// Vérifier si l'heure actuelle est dans cet intervalle
 		const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30
