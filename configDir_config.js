@@ -121,7 +121,7 @@ let config = {
                         module: "MMM-MyTransitTime",
                         position: "top_left",
                         config: {
-                                apiKey: "AIzaSyABP9IZvxdhIkznF5eZjiG9K3IXtnV4KAo",
+                                apiKey: "API_Key_TO_CHANGE
                                 origin: "43 rue Levis, Longueuil, Canada",
                                 destination: "800 rue Saint-Jacques, Montréal, Canada",
                                 mode: "transit",
