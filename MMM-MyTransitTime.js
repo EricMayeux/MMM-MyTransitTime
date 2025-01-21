@@ -32,7 +32,7 @@ Module.register("MMM-MyTransitTime", {
 		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
 
 		this.loopInterval = this.config.interval;
-		const tz = "America/Toronto";
+		const tz = "America/Montreal";
 
 		// Définir les limites de l'intervalle (7h30 et 8h30)
 		this.startHours = moment.tz("07:30", "HH:mm", tz);
