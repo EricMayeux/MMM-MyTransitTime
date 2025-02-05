@@ -121,16 +121,16 @@ let config = {
                         module: "MMM-MyTransitTime",
                         position: "top_left",
                         config: {
-                                apiKey: "API_Key_TO_CHANGE
+                                apiKey: "API_Key_TO_CHANGE",
                                 origin: "43 rue Levis, Longueuil, Canada",
                                 destination: "800 rue Saint-Jacques, Montréal, Canada",
                                 mode: "transit",
-                                interval: 180000,
+                                interval: 60000,
                                 showTransitDetails: true,
                                 customLabel: "Time to Work",
-                                debounceDelay: 120000,
-                                scheduleExtraBeginTime: "2025-01-18 20:47",
-                                scheduleExtraFinishTime: "2025-01-18 20:51",
+                                debounceDelay: 30000,
+                                scheduleExtraBeginTime: "2025-02-05 17:07",
+                                scheduleExtraFinishTime: "2025-02-15 17:21",
                         }
                 },
         ]

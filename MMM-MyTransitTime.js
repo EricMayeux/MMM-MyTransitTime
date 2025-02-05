@@ -6,10 +6,10 @@ Module.register("MMM-MyTransitTime", {
 		origin: "YOUR_ORIGIN_ADDRESS",
 		destination: "YOUR_DESTINATION_ADDRESS",
 		mode: "transit",
-		interval: 180000, // 3min
+		interval: 60000, // 1min
 		showTransitDetails: true, // Set to true to display step-by-step transit details
 		customLabel: "Estimated Time to Get to Work", // Custom label for the module
-		debounceDelay: 120000, // 2 min by default, adjust as needed
+		debounceDelay: 30000, // 30sec by default, adjust as needed
 		scheduleExtraBeginTime: "2024-11-02 14:30", // début des appels a Google Map a - YYYY-MM-DDTHH:mm"
 		scheduleExtraFinishTime: "2024-11-02 15:30", // arret des appels a Google Map a. ex : 2024-11-02T14:30"
 	},
@@ -32,7 +32,7 @@ Module.register("MMM-MyTransitTime", {
 		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
 
 		this.loopInterval = this.config.interval;
-		const tz = "America/Montreal";
+		const tz = "America/Toronto";
 
 		// Définir les limites de l'intervalle (7h30 et 8h30)
 		this.startHours = moment.tz("07:30", "HH:mm", tz);
