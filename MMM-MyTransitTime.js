@@ -145,7 +145,7 @@ Module.register("MMM-MyTransitTime", {
 
 	isSpecificSchedule: function () {
 		// Obtenir l'heure actuelle à Montréal
-		const montrealMomentNow = moment.tz("America/Toronto");
+		const montrealMomentNow = moment.tz("America/Montreal");
 
 		// Vérifier si l'heure actuelle est dans cet intervalle
 		const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30
