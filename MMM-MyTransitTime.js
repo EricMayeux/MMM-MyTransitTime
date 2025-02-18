@@ -64,7 +64,7 @@ Module.register("MMM-MyTransitTime", {
 			this.sendSocketNotification('GET_TRANSIT', this.apiUrl);
 		} else {
 			console.log("Prochain appel = " + this.loopInterval/1000/60 + " min");
-			return;
+			this.sendSocketNotification('STANDBY', null);
 		}
 	},
 
@@ -145,7 +145,7 @@ Module.register("MMM-MyTransitTime", {
 
 	isSpecificSchedule: function () {
 		// Obtenir l'heure actuelle à Montréal
-		const montrealMomentNow = moment.tz("America/Montreal");
+		const montrealMomentNow = moment.tz("America/Toronto");
 
 		// Vérifier si l'heure actuelle est dans cet intervalle
 		const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30

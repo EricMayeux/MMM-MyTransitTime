@@ -22,12 +22,12 @@ module.exports = NodeHelper.create({
 
 						var transitSteps = data.routes[0].legs[0].steps.map(step => {
 							if (step.travel_mode === "WALKING") {
-								return `${step.travel_mode}: Marche ${step.distance.text} (${step.duration.text})`;
+								//return `${step.travel_mode}: Marche ${step.distance.text} (${step.duration.text})`;
 							} else if (step.travel_mode === "TRANSIT") {
 								if (step.transit_details.line.vehicle.type === "SUBWAY") {
 									return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
 								} else if (step.transit_details.line.vehicle.type === "BUS") {
-									return `Bus numéro ${step.transit_details.line.name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+									return `Bus numéro ${step.transit_details.line.short_name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
 								}
 							}
 						});
@@ -50,8 +50,9 @@ module.exports = NodeHelper.create({
 	socketNotificationReceived: function(notification, payload) {
 		if (notification === "GET_TRANSIT") {
 			console.log("[MMM-MyTransitTime] Received GET_TRANSIT notification.");
-
-			this.getGoogleMapInfo(payload);
+			this.getGoogleMapInfo(payload);	
+		} else if (notification === "STANDBY"){
+			console.log("[MMM-MyTransitTime] STANDBY.");
 		}
 	}
 
