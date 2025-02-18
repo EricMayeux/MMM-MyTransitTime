@@ -52,7 +52,7 @@ module.exports = NodeHelper.create({
 			console.log("[MMM-MyTransitTime] Received GET_TRANSIT notification.");
 			this.getGoogleMapInfo(payload);	
 		} else if (notification === "STANDBY"){
-			console.log("[MMM-MyTransitTime] STANDBY.");
+			console.log("[MMM-MyTransitTime] STANDBY. " + payload);
 		}
 	}
 

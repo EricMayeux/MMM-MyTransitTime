@@ -12,6 +12,8 @@ Module.register("MMM-MyTransitTime", {
 		debounceDelay: 30000, // 30sec by default, adjust as needed
 		scheduleExtraBeginTime: "2024-11-02 14:30", // début des appels a Google Map a - YYYY-MM-DDTHH:mm"
 		scheduleExtraFinishTime: "2024-11-02 15:30", // arret des appels a Google Map a. ex : 2024-11-02T14:30"
+		startHours: "18:00",
+		endHours: "18:30", 
 	},
 
 	getScripts: function () {
@@ -29,14 +31,14 @@ Module.register("MMM-MyTransitTime", {
 
   // Initialize the module.
 	start: function () {
-		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
+		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime, startHours, endHours } = this.config;
 
 		this.loopInterval = this.config.interval;
 		const tz = "America/Toronto";
 
 		// Définir les limites de l'intervalle (7h30 et 8h30)
-		this.startHours = moment.tz("07:30", "HH:mm", tz);
-		this.endHours = moment.tz("08:30", "HH:mm", tz);
+		this.startHours = moment.tz(startHours, "HH:mm", tz);
+		this.endHours = moment.tz(endHours, "HH:mm", tz);
 		this.specificExtraDateTimeBegin = moment.tz(scheduleExtraBeginTime, "YYYY-MM-DD HH:mm", tz);
 		this.specificExtraDateTimeFinish = moment.tz(scheduleExtraFinishTime, "YYYY-MM-DD HH:mm", tz);
 
@@ -63,8 +65,8 @@ Module.register("MMM-MyTransitTime", {
 			console.log("Nous sommes en semaine entre 7h30 et 8h30 à Montréal. Prochain appel = " + this.loopInterval/1000/60 + " min");
 			this.sendSocketNotification('GET_TRANSIT', this.apiUrl);
 		} else {
-			console.log("Prochain appel = " + this.loopInterval/1000/60 + " min");
-			this.sendSocketNotification('STANDBY', null);
+			console.log("Prochain appel = " + this.this.loopInterval + " ms");
+			this.sendSocketNotification('STANDBY', this.loopInterval);
 		}
 	},
 
@@ -154,7 +156,7 @@ Module.register("MMM-MyTransitTime", {
 		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
 		if ((isWeekend || !isBetween730And830) && !isWithinSpecificRange) {
-			this.loopInterval = 30 * 60 * 1000; // 30 minutes
+			this.loopInterval = 1800000; // 30 minutes
 			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
 		} else {
