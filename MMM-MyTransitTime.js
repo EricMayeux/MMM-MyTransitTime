@@ -94,13 +94,12 @@ Module.register("MMM-MyTransitTime", {
 					const listItem = document.createElement("li");
 					const textSpan = document.createElement("span");
 
-					//if (detail.includes("WALKING")) {
-						//const walkingIcon = document.createElement("i");
-						//walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
-						//listItem.appendChild(walkingIcon);
-						//textSpan.textContent = `Gambade - ${detail}`;
-					//} else 
-					if (detail.includes("Métro")) {
+					if (detail.includes("WALKING")) {
+						const walkingIcon = document.createElement("i");
+						walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
+						listItem.appendChild(walkingIcon);
+						textSpan.textContent = `Gambade - ${detail}`;
+					} else if (detail.includes("Métro")) {
 						const metroIcon = document.createElement("i");
 						metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
 						listItem.appendChild(metroIcon);
@@ -149,8 +148,8 @@ Module.register("MMM-MyTransitTime", {
 		const montrealMomentNow = moment.tz(timezone);
 	
 		// Définir l'intervalle d'heures fixes (22h00 - 23h00)
-		const startTime = moment.tz(timezone).set({ hour: 22, minute: 0, second: 0, millisecond: 0 });
-		const endTime = moment.tz(timezone).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
+		const startTime = moment.tz(timezone).set({ hour: 18, minute: 0, second: 0, millisecond: 0 });
+		const endTime = moment.tz(timezone).set({ hour: 20, minute: 0, second: 0, millisecond: 0 });
 	
 		// Vérifier si l'heure actuelle est dans cet intervalle
 		const isOutside7And9 = !montrealMomentNow.isBetween(startTime, endTime, "minute", "[]");
@@ -164,7 +163,7 @@ Module.register("MMM-MyTransitTime", {
 			: true;
 	
 		// Logique de validation
-		if (isWeekend || isOutside7And9 || isOutsideRange) {
+		if ((isWeekend || isOutside7And9) && isOutsideRange) {
 			this.loopInterval = this.config.interval; // 30 minutes
 			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
