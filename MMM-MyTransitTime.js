@@ -147,7 +147,10 @@ Module.register("MMM-MyTransitTime", {
 
 	isSpecificSchedule: function () {
 		// Obtenir l'heure actuelle à Montréal
-		const montrealMomentNow = moment.tz("America/Toronto");
+		const timezone = "America/Toronto";
+
+		// Heure actuelle dans le fuseau horaire
+		const montrealMomentNow = moment.tz(timezone).set({ year: 2000, month: 0, day: 1 });
 		const startTime = moment.tz(timezone).set({ year: 2000, month: 0, day: 1, hour: 22, minute: 0, second: 0 });
 		const endTime = moment.tz(timezone).set({ year: 2000, month: 0, day: 1, hour: 23, minute: 0, second: 0 });
 
