@@ -65,7 +65,7 @@ Module.register("MMM-MyTransitTime", {
 			console.log("Nous sommes en semaine entre 7h30 et 8h30 à Montréal. Prochain appel = ", this.loopInterval);
 			this.sendSocketNotification('GET_TRANSIT', this.apiUrl);
 		} else {
-			console.log("Prochain appel = ", this.this.loopInterval," ms");
+			console.log("Prochain appel = ", this.loopInterval," ms");
 			this.sendSocketNotification('STANDBY', this.loopInterval);
 		}
 	},
@@ -160,7 +160,7 @@ Module.register("MMM-MyTransitTime", {
 		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
 		if ((isWeekend || !isBetween730And830) && !isWithinSpecificRange) {
-			this.loopInterval = 1800000; // 30 minutes
+			this.loopInterval = this.config.interval; // 30 minutes
 			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
 		} else {
