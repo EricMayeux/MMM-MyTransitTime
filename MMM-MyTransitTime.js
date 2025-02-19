@@ -12,8 +12,6 @@ Module.register("MMM-MyTransitTime", {
 		debounceDelay: 30000, // 30sec by default, adjust as needed
 		scheduleExtraBeginTime: "2024-11-02 14:30", // début des appels a Google Map a - YYYY-MM-DDTHH:mm"
 		scheduleExtraFinishTime: "2024-11-02 15:30", // arret des appels a Google Map a. ex : 2024-11-02T14:30"
-		startHours: "22:00",
-		endHours: "22:10", 
 	},
 
 	getScripts: function () {
@@ -31,14 +29,11 @@ Module.register("MMM-MyTransitTime", {
 
   // Initialize the module.
 	start: function () {
-		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime, startHours, endHours } = this.config;
+		const { apiKey, origin, destination, mode, scheduleExtraBeginTime, scheduleExtraFinishTime } = this.config;
 
 		this.loopInterval = this.config.interval;
 		const tz = "America/Toronto";
 
-		// Définir les limites de l'intervalle (7h30 et 8h30)
-		this.startHours = moment.tz(startHours, "HH:mm", tz);
-		this.endHours = moment.tz(endHours, "HH:mm", tz);
 		this.specificExtraDateTimeBegin = moment.tz(scheduleExtraBeginTime, "YYYY-MM-DD HH:mm", tz);
 		this.specificExtraDateTimeFinish = moment.tz(scheduleExtraFinishTime, "YYYY-MM-DD HH:mm", tz);
 
@@ -146,31 +141,38 @@ Module.register("MMM-MyTransitTime", {
 	},
 
 	isSpecificSchedule: function () {
-		// Obtenir l'heure actuelle à Montréal
+		// Définir le fuseau horaire
 		const timezone = "America/Toronto";
-
-		// Heure actuelle dans le fuseau horaire
-		const montrealMomentNow = moment.tz(timezone).set({ year: 2000, month: 0, day: 1 });
-		const startTime = moment.tz(timezone).set({ year: 2000, month: 0, day: 1, hour: 22, minute: 0, second: 0 });
-		const endTime = moment.tz(timezone).set({ year: 2000, month: 0, day: 1, hour: 23, minute: 0, second: 0 });
-
+	
+		// Récupérer l'heure actuelle à Montréal (avec la date du jour)
+		const montrealMomentNow = moment.tz(timezone);
+	
+		// Définir l'intervalle d'heures fixes (22h00 - 23h00)
+		const startTime = moment.tz(timezone).set({ hour: 22, minute: 0, second: 0, millisecond: 0 });
+		const endTime = moment.tz(timezone).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
+	
 		// Vérifier si l'heure actuelle est dans cet intervalle
-		const isBetween730And830 = montrealMomentNow.isBetween(startTime, endTime, "minute", "[]")
-		//const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30
-		
-		// Vérifier si c'est un jour de semaine et dans la plage horaire spécifiée
-		const isWeekend = montrealMomentNow.day() === 0 || montrealMomentNow.day() === 6;
-		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
-
-		if ((isWeekend || !isBetween730And830) && !isWithinSpecificRange) {
+		const isBetween7And9 = montrealMomentNow.isBetween(startTime, endTime, "minute", "[]");
+	
+		// Vérifier si c'est le week-end
+		const isWeekend = [0, 6].includes(montrealMomentNow.day());
+	
+		// Vérifier si on est dans une plage horaire spécifique, en évitant les erreurs
+		const isWithinSpecificRange = this.specificExtraDateTimeBegin && this.specificExtraDateTimeFinish
+			? montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]')
+			: false;
+	
+		// Logique de validation
+		if ((isWeekend || !isBetween7And9) && !isWithinSpecificRange) {
 			this.loopInterval = this.config.interval; // 30 minutes
 			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
 		} else {
 			this.loopInterval = this.config.interval;
-			console.log("[MMM-MyTransitTime] let's Go !");
+			console.log("[MMM-MyTransitTime] Let's Go !");
 			return true;
 		}
-	},
+	}
+	,
 
 });
