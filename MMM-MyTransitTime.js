@@ -148,15 +148,19 @@ Module.register("MMM-MyTransitTime", {
 	isSpecificSchedule: function () {
 		// Obtenir l'heure actuelle à Montréal
 		const montrealMomentNow = moment.tz("America/Toronto");
+		const startTime = moment.tz(timezone).set({ year: 2000, month: 0, day: 1, hour: 22, minute: 0, second: 0 });
+		const endTime = moment.tz(timezone).set({ year: 2000, month: 0, day: 1, hour: 23, minute: 0, second: 0 });
 
 		// Vérifier si l'heure actuelle est dans cet intervalle
-		const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30
+		const isBetween730And830 = montrealMomentNow.isBetween(startTime, endTime, "minute", "[]")
+		//const isBetween730And830 = montrealMomentNow.isBetween(this.startHours, this.endHours, null, "[]"); // [) inclut 7:30, exclut 8:30
+		
 		// Vérifier si c'est un jour de semaine et dans la plage horaire spécifiée
 		const isWeekend = montrealMomentNow.day() === 0 || montrealMomentNow.day() === 6;
 		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
 		if ((isWeekend || !isBetween730And830) && !isWithinSpecificRange) {
-			this.loopInterval = 60000; // 30 minutes
+			this.loopInterval = 1800000; // 30 minutes
 			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
 		} else {
