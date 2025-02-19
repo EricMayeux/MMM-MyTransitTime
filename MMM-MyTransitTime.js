@@ -12,8 +12,8 @@ Module.register("MMM-MyTransitTime", {
 		debounceDelay: 30000, // 30sec by default, adjust as needed
 		scheduleExtraBeginTime: "2024-11-02 14:30", // début des appels a Google Map a - YYYY-MM-DDTHH:mm"
 		scheduleExtraFinishTime: "2024-11-02 15:30", // arret des appels a Google Map a. ex : 2024-11-02T14:30"
-		startHours: "18:00",
-		endHours: "18:30", 
+		startHours: "22:00",
+		endHours: "22:10", 
 	},
 
 	getScripts: function () {
@@ -62,10 +62,10 @@ Module.register("MMM-MyTransitTime", {
 	getTransit: function () {
 		// Vérifiez si l'heure actuelle se situe dans la plage de pause et week-end
 		if (this.isSpecificSchedule()) {
-			console.log("Nous sommes en semaine entre 7h30 et 8h30 à Montréal. Prochain appel = " + this.loopInterval/1000/60 + " min");
+			console.log("Nous sommes en semaine entre 7h30 et 8h30 à Montréal. Prochain appel = ", this.loopInterval);
 			this.sendSocketNotification('GET_TRANSIT', this.apiUrl);
 		} else {
-			console.log("Prochain appel = " + this.this.loopInterval + " ms");
+			console.log("Prochain appel = ", this.this.loopInterval," ms");
 			this.sendSocketNotification('STANDBY', this.loopInterval);
 		}
 	},
@@ -100,10 +100,10 @@ Module.register("MMM-MyTransitTime", {
 					const textSpan = document.createElement("span");
 
 					if (detail.includes("WALKING")) {
-						const walkingIcon = document.createElement("i");
-						walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
-						listItem.appendChild(walkingIcon);
-						textSpan.textContent = `Gambade - ${detail}`;
+						//const walkingIcon = document.createElement("i");
+						//walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
+						//listItem.appendChild(walkingIcon);
+						//textSpan.textContent = `Gambade - ${detail}`;
 					} else if (detail.includes("Métro")) {
 						const metroIcon = document.createElement("i");
 						metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
@@ -156,7 +156,7 @@ Module.register("MMM-MyTransitTime", {
 		const isWithinSpecificRange = montrealMomentNow.isBetween(this.specificExtraDateTimeBegin, this.specificExtraDateTimeFinish, null, '[]');
 
 		if ((isWeekend || !isBetween730And830) && !isWithinSpecificRange) {
-			this.loopInterval = 1800000; // 30 minutes
+			this.loopInterval = 60000; // 30 minutes
 			console.log("[MMM-MyTransitTime] R.A.S ");
 			return false;
 		} else {

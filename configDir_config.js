@@ -129,8 +129,8 @@ let config = {
                                 showTransitDetails: true,
                                 customLabel: "Time to Work",
                                 debounceDelay: 30000,
-                                scheduleExtraBeginTime: "2025-02-18 19:00",
-                                scheduleExtraFinishTime: "2025-02-18 19:30",
+                                scheduleExtraBeginTime: "2025-02-18 21:00",
+                                scheduleExtraFinishTime: "2025-02-18 21:20",
                         }
                 },
         ]
