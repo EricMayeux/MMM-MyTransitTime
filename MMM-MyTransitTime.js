@@ -94,10 +94,11 @@ Module.register("MMM-MyTransitTime", {
 					const listItem = document.createElement("li");
 					const textSpan = document.createElement("span");
 					if (detail.includes("Gambade")) {
-						const walkingIcon = document.createElement("i");
-						walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
-						listItem.appendChild(walkingIcon);
-						textSpan.textContent = detail;
+						return;
+						//const walkingIcon = document.createElement("i");
+						//walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
+						//listItem.appendChild(walkingIcon);
+						//textSpan.textContent = detail;
 					} else if (detail.includes("Métro")) {
 						const metroIcon = document.createElement("i");
 						metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
