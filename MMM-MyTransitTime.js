@@ -94,12 +94,7 @@ Module.register("MMM-MyTransitTime", {
 					const listItem = document.createElement("li");
 					const textSpan = document.createElement("span");
 
-					if (detail.includes("WALKING")) {
-						const walkingIcon = document.createElement("i");
-						walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
-						listItem.appendChild(walkingIcon);
-						textSpan.textContent = `Gambade - ${detail}`;
-					} else if (detail.includes("Métro")) {
+					if (detail.includes("Métro")) {
 						const metroIcon = document.createElement("i");
 						metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
 						listItem.appendChild(metroIcon);
@@ -147,7 +142,7 @@ Module.register("MMM-MyTransitTime", {
 		// Récupérer l'heure actuelle à Montréal (avec la date du jour)
 		const montrealMomentNow = moment.tz(timezone);
 	
-		// Définir l'intervalle d'heures fixes (22h00 - 23h00)
+		// Définir l'intervalle d'heures fixes (07h20 - 08h45)
 		const startTime = moment.tz(timezone).set({ hour: 18, minute: 30, second: 0, millisecond: 0 });
 		const endTime = moment.tz(timezone).set({ hour: 18, minute: 55, second: 0, millisecond: 0 });
 	

@@ -21,9 +21,7 @@ module.exports = NodeHelper.create({
 						var transitTime = data.routes[0].legs[0].duration.text;
 
 						var transitSteps = data.routes[0].legs[0].steps.map(step => {
-							if (step.travel_mode === "WALKING") {
-								return `${step.travel_mode}: Marche ${step.distance.text} (${step.duration.text})`;
-							} else if (step.travel_mode === "TRANSIT") {
+							if (step.travel_mode === "TRANSIT") {
 								if (step.transit_details.line.vehicle.type === "SUBWAY") {
 									return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
 								} else if (step.transit_details.line.vehicle.type === "BUS") {
