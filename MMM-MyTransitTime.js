@@ -93,8 +93,12 @@ Module.register("MMM-MyTransitTime", {
 				this.transitDetails.forEach((detail) => {
 					const listItem = document.createElement("li");
 					const textSpan = document.createElement("span");
-
-					if (detail.includes("Métro")) {
+					if (detail.includes("Gambade")) {
+						const walkingIcon = document.createElement("i");
+						walkingIcon.className = "fas fa-walking"; // FontAwesome walking icon
+						listItem.appendChild(walkingIcon);
+						textSpan.textContent = detail;
+					} else if (detail.includes("Métro")) {
 						const metroIcon = document.createElement("i");
 						metroIcon.className = "fas fa-subway"; // FontAwesome subway/train icon
 						listItem.appendChild(metroIcon);
@@ -143,8 +147,8 @@ Module.register("MMM-MyTransitTime", {
 		const montrealMomentNow = moment.tz(timezone);
 	
 		// Définir l'intervalle d'heures fixes (07h20 - 08h45)
-		const startTime = moment.tz(timezone).set({ hour: 18, minute: 30, second: 0, millisecond: 0 });
-		const endTime = moment.tz(timezone).set({ hour: 18, minute: 55, second: 0, millisecond: 0 });
+		const startTime = moment.tz(timezone).set({ hour: 7, minute: 20, second: 0, millisecond: 0 });
+		const endTime = moment.tz(timezone).set({ hour: 8, minute: 45, second: 0, millisecond: 0 });
 	
 		// Vérifier si l'heure actuelle est dans cet intervalle
 		const isOutside7And9 = !montrealMomentNow.isBetween(startTime, endTime, "minute", "[]");
