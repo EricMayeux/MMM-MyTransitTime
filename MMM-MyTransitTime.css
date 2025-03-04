@@ -1,12 +1,8 @@
 
 .MMM-MyTransitTime {
-    Position: absolute;
-    Left: 10px;
-    Top: 300px;
     font-size: 35px;
     color: #FFF;
     padding: 15px;
-    Z-index: 1;
 }
 .bus-detail {
     font-size: 50px;

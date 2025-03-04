@@ -23,7 +23,7 @@ Module.register("MMM-MyTransitTime", {
 
 	getStyles: function() {
 		return [
-			//this.file('anotherfile.css'), // this file will be loaded straight from the module folder.
+			this.file('MMM-MyTransitTime.css'), // this file will be loaded straight from the module folder.
 		]
 	},
 
@@ -80,7 +80,7 @@ Module.register("MMM-MyTransitTime", {
 	getDom: function () {
 		console.log("[MMM-MyTransitTime] getDom func ");
 		const wrapper = document.createElement("div");
-		wrapper.className = "my-transit-time";
+		wrapper.className = "MMM-MyTransitTime";
 		if (this.transitTime) {
 			const timeElement = document.createElement("div");
 			timeElement.className = "transit-time right-aligned"; // Add a class for right alignment
