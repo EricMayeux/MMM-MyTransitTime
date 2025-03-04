@@ -84,6 +84,7 @@ Module.register("MMM-MyTransitTime", {
 		if (this.transitTime) {
 			const timeElement = document.createElement("div");
 			timeElement.className = "transit-time right-aligned"; // Add a class for right alignment
+
 			timeElement.textContent = `Transit Time: ${this.transitTime}`;
 			wrapper.appendChild(timeElement);
 			if (this.config.showTransitDetails && this.transitDetails) {
@@ -111,6 +112,7 @@ Module.register("MMM-MyTransitTime", {
 						const busIcon = document.createElement("i");
 						busIcon.className = "fas fa-bus"; // FontAwesome bus icon
 						listItem.appendChild(busIcon);
+						listItem.className = "bus-detail"
 						textSpan.textContent = detail;
 					}
 
