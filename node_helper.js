@@ -28,7 +28,7 @@ module.exports = NodeHelper.create({
 								if (step.transit_details.line.vehicle.type === "SUBWAY") {
 									return `Métro ${step.transit_details.line.name} depuis ${step.transit_details.departure_stop.name} vers ${step.transit_details.arrival_stop.name} (départ: ${step.transit_details.departure_time.text} - arrivée: ${step.transit_details.arrival_time.text})`;
 								} else if (step.transit_details.line.vehicle.type === "BUS") {
-									return `Bus numéro ${step.transit_details.line.short_name} à ${step.transit_details.departure_time.text} (arrivée : ${step.transit_details.arrival_time.text})`;
+									return `Bus numéro ${step.transit_details.line.short_name} à ${step.transit_details.departure_time.text}\n(arrivée : ${step.transit_details.arrival_time.text})`;
 								}
 							}
 						});
@@ -47,6 +47,9 @@ module.exports = NodeHelper.create({
 				}
 			});
 	},
+	getWaitingInfo: function() {
+		return `Attente du prochain créneau horaire ;-)`;
+	},
 
 	socketNotificationReceived: function(notification, payload) {
 		if (notification === "GET_TRANSIT") {
@@ -54,6 +57,7 @@ module.exports = NodeHelper.create({
 			this.getGoogleMapInfo(payload);	
 		} else if (notification === "STANDBY"){
 			console.log("[MMM-MyTransitTime] STANDBY. ", payload);
+			this.getWaitingInfo();
 		}
 	}
 
