@@ -163,7 +163,7 @@ Module.register("MMM-MyTransitTime", {
 		const isOutside7And9 = !montrealMomentNow.isBetween(startTime, endTime, "minute", "[]");
 	
 		// Vérifier si c'est le week-end
-		const isWeekend = [0, 6].includes(montrealMomentNow.day());
+		const isWeekend = [1,5].includes(montrealMomentNow.day());
 	
 		// Vérifier si on est dans une plage horaire spécifique, en évitant les erreurs
 		const isOutsideRange = this.specificExtraDateTimeBegin && this.specificExtraDateTimeFinish
