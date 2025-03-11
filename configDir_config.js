@@ -36,14 +36,14 @@ let config = {
                 },
                 {
                         module: "calendar",
-                        header: "CA Holidays",
+                        header: "Calendrier",
                         position: "top_left",
                         config: {
                                 calendars: [
                                         {
                                                 fetchInterval: 7 * 24 * 60 * 60 * 1000,
                                                 symbol: "calendar-check",
-                                                url: "https://canada-holidays.ca/ics/QC/2024"
+                                                url: "https://calendar.google.com/calendar/ical/mayeux.e@gmail.com/public/basic.ics"
                                         }
                                 ]
                         }
@@ -129,8 +129,8 @@ let config = {
                                 showTransitDetails: true,
                                 customLabel: "Time to Work",
                                 debounceDelay: 30000,
-                                scheduleExtraBeginTime: "2025-02-18 21:00",
-                                scheduleExtraFinishTime: "2025-02-18 21:20",
+                                scheduleExtraBeginTime: "2025-02-19 19:10",
+                                scheduleExtraFinishTime: "2025-02-19 19:20",
                         }
                 },
         ]
