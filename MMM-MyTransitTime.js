@@ -114,6 +114,12 @@ Module.register("MMM-MyTransitTime", {
 						listItem.appendChild(busIcon);
 						listItem.className = "bus-detail"
 						textSpan.textContent = detail;
+					} else if (detail.includes("créneau")) {
+						const waitIcon = document.createElement("i");
+						waitIcon.className = "fa-regular fa-comment-dots"; // dots icon
+						listItem.appendChild(waitIcon);
+						listItem.className = "wait-detail"
+						textSpan.textContent = detail;
 					}
 
 					listItem.appendChild(textSpan);
